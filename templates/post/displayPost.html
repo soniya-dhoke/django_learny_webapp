@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body %}
+
+<link href="https://vjs.zencdn.net/7.17.0/video-js.css" rel="stylesheet" />
+<link rel="stylesheet" href="{% static 'css/newsfeed.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<div class="container mt-4 mb-5 ml-2">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-3" style="margin-top:40px;">
+            <div class="feed p-2 ">
+                <div class="bg-white mt-2 sidebar" style="border: 1px solid rgb(230, 230, 230);">
+                    <h5 class="text-center">Most Common Tags</h5>
+                    {% for tag in most_common_tags %}
+                    <a href="{% url 'search_by_tag' tag.slug %} " class="mr-1 badge badge-info post-tags">{{tag}}</a>
+                    {% endfor %}
+                </div>
+                <div class="bg-white mt-3 sidebar text-center" style="border: 1px solid rgb(230, 230, 230);">
+                    <a href="{% url 'most_liked_post' %}" class="mr-1 badge mlpost">
+                        Most Liked Post
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="feed p-2">
+                {% if search_message %}
+                <div class="alert alert-primary" role="alert">
+                    {{search_message}}
+                </div>
+                {% endif %}
+                {% for post in posts%}
+                <div class="bg-white mt-2" style="border: 1px solid rgb(230, 230, 230); 
+                margin-bottom: 5px; border-radius: 20px;">
+                    <div class="post-div padding-div">
+                        <div class="feed-text pb-3">
+                            <div class="post-deet-container">
+                                <!--
+                                        <img class="rounded-circle"
+                                        src="https://i.imgur.com/aoKusnD.jpg" width="45"> -->
+                                <span class="post-author pl-2"> {{post.author.username}}</span>
+                                <span class="post-time pl-2">{{post.date_posted}}</span>
+
+                            </div>
+                            <span class="post-tags pt-1">
+                                {% for tag in post.tags.all %}
+                                <a href="{% url 'search_by_tag' tag.slug %} "
+                                    class="mr-1 badge badge-info post-tags">{{tag}}</a>
+                                {% endfor %}
+                            </span>
+
+                        </div>
+
+                        <hr>
+                        <div class="post-content">
+                            <div class="post-title">{{post.title}}
+                            </div>
+                            
+                            {% if post.content %}
+                            <span>{{post.content|safe}}</span>
+                            <br>
+                            {% endif %}
+                            {% if post.image %}
+
+                            <a href="{{post.image.url}}">
+                                <img id="post-image" class="" src="{{post.image.url }}" alt="image not loading."
+                                    height="100%" width="100%"></a>
+                            {% endif %}
+                            {% if post.video %}
+                            <br>
+                            <video id="my-video" class="video-js" controls preload="auto" width="650px" height="300px"
+                                data-setup="{}">
+                                <source src="{{post.video.url}}" type="video/mp4" />
+                            </video>
+
+                            <br>
+                            {% endif %}
+                            <!--  
+                        {% if post.link %}
+                        <strong>Link:</strong> <a style="color: #007bff;" href="{{post.link}}">{{post.link}}</a>
+                       
+                        {% endif %}
+                        -->
+
+                        </div>
+                        <hr>
+                        <div class="like-div">
+
+
+                            {% if request.user in post.likes.all %} <button type="button"
+                                class="btn btn-light btn-outline">
+                                <span class='likes_count'>{{ post.likes_count }} </span><a name="{{ post.id }}"
+                                    style="color: #17a2b8;" class="likin" id="co"> Like <i class="fa fa-thumbs-up"
+                                        aria-hidden="true"></i></a>
+                            </button>
+                            {% else %}
+                            <button type="button" class="btn btn-light btn-outline">
+                                <span class='likes_count'>{{ post.likes_count }} </span><a name="{{ post.id }}"
+                                    style="color: black;" class="likin" id="co">Like <i class="fa fa-thumbs-up"
+                                        aria-hidden="true"></i></a>
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+
+                        {% if posts.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+                        <li class="page-item"><a class="page-link"
+                                href="?page={{ posts.previous_page_number }}">Previous</a>
+                        </li>
+
+                        {% endif %}
+
+                        {% for i in nums %}
+                        <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{forloop.counter}}</a>
+                        </li>
+
+                        {% endfor %}
+
+
+                        {% if posts.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+                        </li>
+
+                        <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Last
+                                &raquo</a>
+                        </li>
+
+                        {% endif %}
+
+                    </ul>
+                </nav>
+        </div>
+        <script>
+            $('.likin').click(function () {
+                $liked = $(this);
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'like_post' %}",
+                    data: { 'post_id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}' },
+                    dataType: "json",
+                    success: function (response) {
+                        $liked.css("color", response.liked == true ? "#17a2b8" : "black");
+                        $liked.prev().html(response.likes_count)
+                        $liked.css("font-weight", response.liked == true ? "700" : "400")
+                    }
+
+                });
+
+            })
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://vjs.zencdn.net/7.17.0/video.min.js"></script>
+        {% endblock %}

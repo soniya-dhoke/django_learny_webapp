@@ -1,0 +1,53 @@
+body {
+  background-color: #f3f0e8;
+}
+nav {
+  background-color: #fff;
+}
+.navbar-brand,
+.navbar-brand:hover,
+.navbar-brand:active,
+.navbar-brand:active {
+  font-weight: 720;
+  color: #17a2b8;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.btn:focus,
+.btn:active:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+input,
+input:focus,
+input:active:focus {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.nav-item {
+  /* border: 1px solid gray; */
+  border-radius: 18px;
+  padding: 5px 5px;
+  margin: 0 10px;
+  color: #17a2b8;
+}
+
+ul {
+  margin-left: 30%;
+}
+.nav-link {
+  font-weight: 600 !important;
+}
+
+.nav-item:hover {
+  background-color: rgb(242, 242, 242);
+}

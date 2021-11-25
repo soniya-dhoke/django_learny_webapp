@@ -1,0 +1,88 @@
+.time {
+  font-size: 15px !important;
+}
+
+.socials i {
+  margin-right: 14px;
+  font-size: 17px;
+  color: red;
+  cursor: pointer;
+}
+
+.feed-image img {
+  width: 100%;
+  height: auto;
+}
+
+.sidebar {
+  padding: 20px;
+}
+.sidebar h5,
+.mlpost {
+  font-size: 1em;
+  font-weight: 450;
+  color: rgb(0, 0, 0);
+  margin-bottom: 20px;
+}
+
+.padding-div {
+  padding: 20px 20px 0 20px;
+}
+
+.rounded-circle {
+  height: 50px;
+  width: 50px;
+}
+
+.post-author {
+  font-weight: 650;
+  font-size: 1.15rem;
+}
+
+.post-time {
+  font-size: 0.8rem;
+  color: gray;
+  padding-top: 1px;
+}
+
+.post-content {
+  padding: 0px 20px 10px 20px;
+}
+
+.post-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 10px 0 0 0;
+}
+hr {
+  margin: 0px 0 0px 0;
+}
+.sub-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-tags {
+  margin-top: 5px;
+}
+.feed-text {
+  display: flex;
+  justify-content: space-between;
+}
+
+.like-div {
+  padding: 5px 0 10px 20px;
+}
+
+.post-image {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.likes_count {
+  font-weight: 750;
+  color: gray;
+  margin-right: 5px;
+  padding: 1px 1px 1px 4px;
+  border-radius: 15px;
+}
