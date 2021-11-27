@@ -106,6 +106,7 @@
                 </div>
                 {% endfor %}
             </div>
+            {% if posts %}
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
 
@@ -135,7 +136,9 @@
                         {% endif %}
 
                     </ul>
+
                 </nav>
+                {% endif %}
         </div>
         <script>
             $('.likin').click(function () {

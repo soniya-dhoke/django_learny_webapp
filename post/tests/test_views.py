@@ -48,19 +48,24 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response,'post/displayPost.html')
 
     def test_search_without_tag_as_parameter(self):
-        response = self.client.get(reverse('search'),{
+        response = self.client.post(reverse('search'),{
             'search': 'tag1'
         })
+        post = Post.objects.filter(tags__name__in=['tag1'])
+        self.assertNotEquals(post,None)
         self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response,'post/displayPost.html')
 
     def test_search_with_tag_as_parameter(self):
         response = self.client.get(reverse('search_by_tag',args=['tag1']))
+        post = Post.objects.filter(tags__name__in=['tag1'])
+        self.assertNotEquals(post,None)
+        self.assertEquals(response.status_code,200)
         self.assertTemplateUsed(response,'post/displayPost.html')
     
 
     def test_like_post(self):
         response = self.client.post(reverse('like_post'),{
-            'post_id': self.test_post.id
+            'post_id': self.test_post.id,
         })
         self.assertEquals(response.status_code,200)
